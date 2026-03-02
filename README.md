@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Onset
 
-## Getting Started
+Train a face LoRA from a single photo. Onset bootstraps a complete training dataset — expressions, angles, outfits, lighting — from one reference image, then trains a LoRA model via fal.ai.
 
-First, run the development server:
+## Features
+
+- **One-photo dataset** — upload a single face image, get 36-54 curated training images across 4-6 variation rounds
+- **Progressive generation** — expressions, angles, outfits, framing, accessories, poses. Each round feeds prior selections as anchors
+- **Manual curation** — select/deselect individual images per round before moving on
+- **Configurable** — 2K or 4K generation resolution, 4 or 6 rounds, cost estimate upfront
+- **LoRA training** — bundles your curated dataset and submits to fal.ai Flux LoRA training
+- **Profile library** — saved LoRAs with trigger words, downloadable weights, hover image previews
+- **Mock mode** — `?mock=true` on any page for design iteration without API calls
+
+## Quick Start
 
 ```bash
+git clone https://github.com/catcatcatai/onset.git
+cd onset
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Opens at `http://localhost:3000`. You'll need a [fal.ai API key](https://fal.ai/dashboard/keys) to generate images and train.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Upload a clear, front-facing photo
+2. Onset generates a 3x3 grid of face variations per round using NanoBanana
+3. You curate — keep the good ones, drop the drifted faces
+4. After all rounds, review the full dataset and configure your LoRA (name, trigger word)
+5. Training runs on fal.ai (~$2, ~5-10 min) and saves to your profile library
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| | |
+|---|---|
+| Framework | Next.js 15, App Router, TypeScript |
+| Styling | Tailwind CSS v4 + shadcn/ui |
+| State | Zustand (session + localStorage) |
+| AI | fal.ai (NanoBanana generation + Flux LoRA training) |
+| Font | [Roboto Mono](https://fonts.google.com/specimen/Roboto+Mono) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cost
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| | |
+|---|---|
+| Generation (4K) | ~$0.30/round |
+| Generation (2K) | ~$0.15/round |
+| LoRA training | ~$2.00 |
+| **Total (6 rounds, 4K)** | **~$3.80** |
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
